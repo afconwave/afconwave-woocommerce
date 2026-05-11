@@ -1,11 +1,15 @@
-# AfconWave Secure Gateway — WordPress / WooCommerce Plugin
+# AfconWave Secure Gateway
 
-> Accept mobile money and card payments in your WooCommerce store with AfconWave's official "Secure Access" payment gateway.
+Accept mobile money and card payments in Africa securely via the official AfconWave gateway for WooCommerce.
 
-[![WordPress](https://img.shields.io/badge/WordPress-5.8+-blue.svg)](https://wordpress.org)
-[![WooCommerce](https://img.shields.io/badge/WooCommerce-6.0+-purple.svg)](https://woocommerce.com)
-[![PHP](https://img.shields.io/badge/PHP-7.4+-purple.svg)](https://www.php.net/)
-[![License: GPL v2](https://img.shields.io/badge/License-GPL%20v2-blue.svg)](https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html)
+Contributors: afconwave
+Tags: woocommerce, mobile-money, cards, payments, africa
+Requires at least: 5.8
+Tested up to: 6.5
+Stable tag: 1.0.0
+Requires PHP: 7.2
+License: GPLv2 or later
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
 ---
 
@@ -69,10 +73,10 @@ Click **Manage**.
 
 | Field | Description |
 |---|---|
-| **Live Secret Key** | `sk_live_...` — Used in production. |
-| **Test Secret Key** | `sk_test_...` — Used in sandbox mode. |
-| **Live Public Key** | `pk_live_...` — Used for Checkout JS. |
-| **Test Public Key** | `pk_test_...` — Used in sandbox Checkout. |
+| **Live Secret Key** | `afc_sk_live_...` — Used in production. |
+| **Test Secret Key** | `afc_sk_test_...` — Used in sandbox mode. |
+| **Live Public Key** | `afc_pk_live_...` — Used for Checkout JS. |
+| **Test Public Key** | `afc_pk_test_...` — Used in sandbox Checkout. |
 
 Find these keys in your [AfconWave Merchant Dashboard](https://dashboard.afconwave.com/api-keys).
 
@@ -193,6 +197,18 @@ define('WP_DEBUG_LOG', true);
 ```
 
 Check `wp-content/debug.log` for AfconWave-related entries.
+
+---
+
+---
+
+## Sandbox & Test Mode (Stripe-style)
+
+To implement a robust sandbox environment like Stripe without complex subdomains:
+
+1. **API Key Prefixing**: Ensure your test keys start with `afc_sk_test_` and live keys with `afc_sk_live_`.
+2. **Backend Logic**: In your Node.js backend (Render), check the incoming `Authorization` header. If the key contains `_test_`, route the transaction to a test database or a mock payment provider.
+3. **Indicator**: The WordPress plugin now automatically shows a "TEST MODE ACTIVE" badge in the checkout when sandbox mode is enabled, providing immediate feedback to customers and testers.
 
 ---
 
