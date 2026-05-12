@@ -7,17 +7,17 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-class WC_Gateway_AfconWave extends WC_Payment_Gateway
+class AfconWave_Gateway extends WC_Payment_Gateway
 {
 
     public function __construct()
     {
         $this->id = 'afconwave';
-        $this->icon = apply_filters('woocommerce_afconwave_icon', plugins_url('assets/afconwave_woo_commerce_logo.png', dirname(__FILE__)));
+        $this->icon = apply_filters('afconwave_gateway_icon', plugins_url('assets/afconwave_gateway_icon.png', dirname(__FILE__)));
         $this->has_fields = false;
         $this->supports   = array( 'products' );
-        $this->method_title = 'AfconWave';
-        $this->method_description = 'Accept payments via Mobile Money and Cards in Africa.';
+        $this->method_title = __('AfconWave', 'afconwave-gateway');
+        $this->method_description = __('Accept payments via Mobile Money and Cards in Africa.', 'afconwave-gateway');
 
         $this->init_form_fields();
         $this->init_settings();
@@ -43,54 +43,54 @@ class WC_Gateway_AfconWave extends WC_Payment_Gateway
     {
         $this->form_fields = array(
             'enabled' => array(
-                'title'   => 'Enable/Disable',
+                'title'   => __('Enable/Disable', 'afconwave-gateway'),
                 'type'    => 'checkbox',
-                'label'   => 'Enable AfconWave Gateway',
+                'label'   => __('Enable AfconWave Gateway', 'afconwave-gateway'),
                 'default' => 'yes'
             ),
             'title' => array(
-                'title'    => 'Title',
+                'title'    => __('Title', 'afconwave-gateway'),
                 'type'     => 'text',
-                'default'  => 'AfconWave (Mobile Money/Cards)',
+                'default'  => __('AfconWave (Mobile Money/Cards)', 'afconwave-gateway'),
                 'desc_tip' => true,
-                'description' => 'Payment method name shown to the customer at checkout.'
+                'description' => __('Payment method name shown to the customer at checkout.', 'afconwave-gateway')
             ),
             'description' => array(
-                'title'       => 'Description',
+                'title'       => __('Description', 'afconwave-gateway'),
                 'type'        => 'textarea',
-                'default'     => 'Pay securely with Mobile Money (MTN, Orange, Wave) or your Visa/Mastercard.',
+                'default'     => __('Pay securely with Mobile Money (MTN, Orange, Wave) or your Visa/Mastercard.', 'afconwave-gateway'),
                 'desc_tip'    => true,
-                'description' => 'Payment method description shown to the customer at checkout.'
+                'description' => __('Payment method description shown to the customer at checkout.', 'afconwave-gateway')
             ),
             'test_mode' => array(
-                'title' => 'Test Mode',
+                'title' => __('Test Mode', 'afconwave-gateway'),
                 'type' => 'checkbox',
-                'label' => 'Enable Test Mode',
+                'label' => __('Enable Test Mode', 'afconwave-gateway'),
                 'default' => 'yes',
-                'description' => 'In test mode, the gateway uses your Test API Keys and no real money is processed.'
+                'description' => __('In test mode, the gateway uses your Test API Keys and no real money is processed.', 'afconwave-gateway')
             ),
             'test_secret_key' => array(
-                'title' => 'Test Secret Key',
+                'title' => __('Test Secret Key', 'afconwave-gateway'),
                 'type' => 'password',
-                'description' => 'Find your keys in the AfconWave Dashboard → API Keys.'
+                'description' => __('Find your keys in the AfconWave Dashboard → API Keys.', 'afconwave-gateway')
             ),
             'test_public_key' => array(
-                'title' => 'Test Public Key',
+                'title' => __('Test Public Key', 'afconwave-gateway'),
                 'type' => 'text'
             ),
             'live_secret_key' => array(
-                'title' => 'Live Secret Key',
+                'title' => __('Live Secret Key', 'afconwave-gateway'),
                 'type' => 'password',
-                'description' => 'Used for real transactions. Keep this key secure.'
+                'description' => __('Used for real transactions. Keep this key secure.', 'afconwave-gateway')
             ),
             'live_public_key' => array(
-                'title' => 'Live Public Key',
+                'title' => __('Live Public Key', 'afconwave-gateway'),
                 'type' => 'text'
             ),
             'webhook_secret' => array(
-                'title' => 'Webhook Secret',
+                'title' => __('Webhook Secret', 'afconwave-gateway'),
                 'type' => 'password',
-                'description' => 'Used to verify that webhook events are actually sent from AfconWave.',
+                'description' => __('Used to verify that webhook events are actually sent from AfconWave.', 'afconwave-gateway'),
                 'desc_tip' => true,
             )
         );
@@ -103,7 +103,7 @@ class WC_Gateway_AfconWave extends WC_Payment_Gateway
 
         if (!$order) {
             $logger->error('AfconWave: Invalid order ID ' . $order_id, array('source' => 'afconwave'));
-            wc_add_notice(esc_html__('Invalid order. Please try again.', 'afconwave-secure-gateway'), 'error');
+            wc_add_notice(esc_html__('Invalid order. Please try again.', 'afconwave-gateway'), 'error');
             return array('result' => 'fail');
         }
 
@@ -129,7 +129,7 @@ class WC_Gateway_AfconWave extends WC_Payment_Gateway
 
         if (is_wp_error($response)) {
             $logger->error('AfconWave API Error for Order ' . $order_id . ': ' . $response->get_error_message(), array('source' => 'afconwave'));
-            wc_add_notice(esc_html__('Payment processing failed. Please try again or contact support.', 'afconwave-secure-gateway'), 'error');
+            wc_add_notice(esc_html__('Payment processing failed. Please try again or contact support.', 'afconwave-gateway'), 'error');
             return array('result' => 'fail');
         }
 
@@ -139,13 +139,13 @@ class WC_Gateway_AfconWave extends WC_Payment_Gateway
 
         if ($response_code < 200 || $response_code >= 300) {
             $logger->error('AfconWave API HTTP Error for Order ' . $order_id . ': ' . $response_code . ' - ' . $body, array('source' => 'afconwave'));
-            wc_add_notice(esc_html__('Payment gateway is temporarily unavailable. Please try again later.', 'afconwave-secure-gateway'), 'error');
+            wc_add_notice(esc_html__('Payment gateway is temporarily unavailable. Please try again later.', 'afconwave-gateway'), 'error');
             return array('result' => 'fail');
         }
 
         if (json_last_error() !== JSON_ERROR_NONE) {
             $logger->error('AfconWave: Invalid JSON response for Order ' . $order_id . ': ' . $body, array('source' => 'afconwave'));
-            wc_add_notice(esc_html__('Payment gateway error. Please try again later.', 'afconwave-secure-gateway'), 'error');
+            wc_add_notice(esc_html__('Payment gateway error. Please try again later.', 'afconwave-gateway'), 'error');
             return array('result' => 'fail');
         }
 
@@ -159,7 +159,8 @@ class WC_Gateway_AfconWave extends WC_Payment_Gateway
 
         $error_message = isset($data['message']) ? $data['message'] : 'Unknown error';
         $logger->error('AfconWave: Payment failed for Order ' . $order_id . ': ' . $error_message, array('source' => 'afconwave'));
-        wc_add_notice(sprintf(esc_html__('Payment could not be processed: %s', 'afconwave-secure-gateway'), esc_html($error_message)), 'error');
+        /* translators: %s: error message from API */
+        wc_add_notice(sprintf(esc_html__('Payment could not be processed: %s', 'afconwave-gateway'), esc_html($error_message)), 'error');
         return array('result' => 'fail');
     }
 
@@ -223,7 +224,8 @@ class WC_Gateway_AfconWave extends WC_Payment_Gateway
             case 'payment.success':
                 if (!$order->has_status('processing') && !$order->has_status('completed')) {
                     $order->payment_complete($event['data']['id']);
-                    $order->add_order_note(sprintf(esc_html__('AfconWave payment successful. Transaction ID: %s', 'afconwave-secure-gateway'), esc_html($event['data']['id'])));
+                    /* translators: %s: transaction ID */
+                    $order->add_order_note(sprintf(esc_html__('AfconWave payment successful. Transaction ID: %s', 'afconwave-gateway'), esc_html($event['data']['id'])));
                     $logger->info('AfconWave Webhook: Payment completed for Order ' . $order_id, array('source' => 'afconwave'));
                     do_action('afconwave_payment_success', $order_id, $event['data']);
                 } else {
@@ -231,7 +233,7 @@ class WC_Gateway_AfconWave extends WC_Payment_Gateway
                 }
                 break;
             case 'payment.failed':
-                $order->update_status('failed', esc_html__('AfconWave payment failed.', 'afconwave-secure-gateway'));
+                $order->update_status('failed', esc_html__('AfconWave payment failed.', 'afconwave-gateway'));
                 $logger->warning('AfconWave Webhook: Payment failed for Order ' . $order_id, array('source' => 'afconwave'));
                 do_action('afconwave_payment_failed', $order_id, $event['data']);
                 break;
@@ -242,11 +244,12 @@ class WC_Gateway_AfconWave extends WC_Payment_Gateway
                     wc_create_refund(array(
                         'order_id'       => $order_id,
                         'amount'         => $refund_amount,
-                        'reason'         => $reason ?: esc_html__('Refunded via AfconWave', 'afconwave-secure-gateway'),
+                        'reason'         => $reason ?: esc_html__('Refunded via AfconWave', 'afconwave-gateway'),
                         'refund_payment' => false, // money already returned by AfconWave
                     ));
                 }
-                $order->add_order_note(sprintf(esc_html__('AfconWave refund processed. Transaction ID: %s', 'afconwave-secure-gateway'), esc_html($event['data']['id'] ?? '')));
+                /* translators: %s: transaction ID */
+                $order->add_order_note(sprintf(esc_html__('AfconWave refund processed. Transaction ID: %s', 'afconwave-gateway'), esc_html($event['data']['id'] ?? '')));
                 $logger->info('AfconWave Webhook: Refund processed for Order ' . $order_id, array('source' => 'afconwave'));
                 do_action('afconwave_payment_refunded', $order_id, $event['data']);
                 break;

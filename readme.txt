@@ -1,19 +1,19 @@
-=== AfconWave Secure Gateway ===
+=== AfconWave Gateway ===
 Contributors: afconwave
-Tags: woocommerce, mobile money, cards, payments, africa, mtn, orange money, wave, payment gateway
+Tags: woocommerce, mobile money, payments, global
 Requires at least: 5.8
-Tested up to: 6.5
+Tested up to: 6.9
 Requires PHP: 7.4
 Stable tag: 1.0.0
 Requires Plugins: woocommerce
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Accept Mobile Money and Card payments across Africa with the official AfconWave gateway for WooCommerce.
+Accept Mobile Money and Card payments globally with the official AfconWave gateway for WooCommerce.
 
 == Description ==
 
-AfconWave Secure Gateway lets WooCommerce stores accept payments from MTN Mobile Money, Orange Money, Moov, Wave, Visa and Mastercard across Cameroon, Senegal, Côte d'Ivoire, Ghana, Nigeria, Kenya and more.
+AfconWave Gateway lets WooCommerce stores accept payments from MTN Mobile Money, Orange Money, Moov, Wave, Visa and Mastercard across Africa, Asia, UAE, USA and more.
 
 **Features**
 
@@ -46,7 +46,16 @@ Yes. The plugin registers a Blocks integration and works on both legacy and Bloc
 Yes. The plugin declares full compatibility with WooCommerce High-Performance Order Storage.
 
 = Can I use the gateway without WooCommerce? =
-Use the `[afconwave_pay amount="5000" currency="XAF"]` shortcode for standalone payment buttons.
+Use the `[afconwave_pay amount="50" currency="USD"]` shortcode for standalone payment buttons.
+
+== Privacy ==
+
+This plugin utilizes the AfconWave API to process payments. When a customer checks out:
+* Order details (amount, currency, customer name, email, and phone) are sent to AfconWave servers to initiate the transaction.
+* Payment processing occurs on AfconWave's secure hosted page. No credit card or sensitive financial data is stored or processed on your WordPress server.
+* Webhook data is received from AfconWave to update order statuses.
+
+For more information, please see [AfconWave's Privacy Policy](https://afconwave.com/legal/privacy).
 
 == Screenshots ==
 

@@ -10,7 +10,7 @@ if (!defined('ABSPATH')) {
 
 use Automattic\WooCommerce\Blocks\Payments\Integrations\AbstractPaymentMethodType;
 
-final class WC_AfconWave_Blocks_Support extends AbstractPaymentMethodType
+final class AfconWave_Blocks_Support extends AbstractPaymentMethodType
 {
     protected $name = 'afconwave';
 
@@ -47,10 +47,10 @@ final class WC_AfconWave_Blocks_Support extends AbstractPaymentMethodType
     public function get_payment_method_data()
     {
         return array(
-            'title'       => $this->get_setting('title', 'AfconWave (Mobile Money / Card)'),
-            'description' => $this->get_setting('description', 'Pay securely with Mobile Money or your card.'),
+            'title'       => $this->get_setting('title', __('AfconWave (Mobile Money / Card)', 'afconwave-gateway')),
+            'description' => $this->get_setting('description', __('Pay securely with Mobile Money or your card.', 'afconwave-gateway')),
             'supports'    => array('products'),
-            'icon'        => plugins_url('assets/afconwave_woo_commerce_logo.png', dirname(__FILE__)),
+            'icon'        => plugins_url('assets/afconwave_gateway_icon.png', dirname(__FILE__)),
         );
     }
 }
